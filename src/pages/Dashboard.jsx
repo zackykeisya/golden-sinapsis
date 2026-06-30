@@ -1,6 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useExam } from '../context/ExamContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowLeft,
+  faGraduationCap,
+  faClock,
+  faUser,
+  faEnvelope,
+  faKey,
+  faPlay,
+  faSignOutAlt,
+  faChevronDown,
+  faChevronUp,
+  faCheckCircle,
+  faSpinner,
+  faShieldAlt,
+  faList,
+  faFileAlt,
+  faUsers,
+  faAward,
+  faCalendarAlt,
+  faHourglassHalf
+} from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,27 +45,20 @@ const Dashboard = () => {
   const [showRules, setShowRules] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
 
-  // Check if exam can start
   useEffect(() => {
-    // Exam can start if timeRemaining > 0 and not started
     if (timeRemaining > 0 && !isExamStarted) {
       setCanStart(true);
     } else {
       setCanStart(false);
     }
 
-    // If exam already started, redirect to exam page
     if (isExamStarted) {
       navigate('/exam');
     }
   }, [timeRemaining, isExamStarted, navigate]);
 
-  // Countdown timer for session start (if not yet live)
   useEffect(() => {
     if (!canStart && timeRemaining > 0) {
-      // Calculate time until session start
-      // For demo, we'll use a simulated countdown
-      // In production, this would come from the server
       const interval = setInterval(() => {
         setCountdown(prev => {
           if (prev === null) return 10;
@@ -56,7 +71,6 @@ const Dashboard = () => {
         });
       }, 1000);
 
-      // Initial countdown
       setCountdown(10);
 
       return () => clearInterval(interval);
@@ -81,13 +95,12 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    if (window.confirm('Are you sure you want to leave? You can resume your session later.')) {
+    if (window.confirm('Apakah Anda yakin ingin keluar? Anda dapat melanjutkan sesi nanti.')) {
       resetExam();
       navigate('/');
     }
   };
 
-  // Format time for display
   const formatTime = (seconds) => {
     if (!seconds) return '--:--';
     const mins = Math.floor(seconds / 60);
@@ -96,97 +109,106 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white-luxury flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50/30 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gold-glow rounded-full opacity-10"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-glow rounded-full opacity-5"></div>
-      </div>
-
-      <div className="relative w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gold-gradient text-white shadow-gold mb-4">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-gradient-to-r from-amber-300/20 to-amber-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-gradient-to-l from-amber-300/20 to-amber-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-200/5 to-transparent rounded-full blur-3xl"></div>
+        
+        {/* Geometric Pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute top-20 right-20">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+              <path d="M60 0L72 45L120 60L72 75L60 120L48 75L0 60L48 45L60 0Z" fill="#D4AF37" />
             </svg>
           </div>
-          <h1 className="text-3xl md:text-4xl font-display text-charcoal">
-            Welcome, <span className="text-gold-gradient">{studentName}</span>
+          <div className="absolute bottom-20 left-20">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <path d="M40 0L48 30L80 40L48 50L40 80L32 50L0 40L32 30L40 0Z" fill="#D4AF37" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` 
+        }}></div>
+      </div>
+
+      <div className="relative w-full max-w-2xl z-10">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-xl shadow-amber-500/25 mb-5 transform hover:scale-110 transition-transform duration-300">
+            <FontAwesomeIcon icon={faGraduationCap} className="w-10 h-10" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-800">
+            Selamat Datang, <span className="bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent">{studentName}</span>
           </h1>
-          <p className="text-charcoal-gray/70 text-sm mt-1">
-            Your competition session is ready
+          <p className="text-slate-500 text-sm mt-1">
+            Sesi kompetisi Anda sudah siap
           </p>
         </div>
 
         {/* Main Card */}
-        <div className="card-gold p-8 md:p-10">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-slate-200/50 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500">
           {/* Exam Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white-luxury rounded-lg p-4 border border-gold-light/30">
-              <div className="flex items-center text-charcoal-gray text-sm mb-1">
-                <svg className="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Access Code
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/50">
+              <div className="flex items-center text-slate-500 text-sm mb-1">
+                <FontAwesomeIcon icon={faKey} className="w-4 h-4 mr-2 text-amber-500" />
+                Kode Akses
               </div>
-              <div className="font-mono font-semibold text-charcoal text-lg tracking-wider">
+              <div className="font-mono font-semibold text-slate-800 text-lg tracking-wider">
                 {accessCode}
               </div>
             </div>
 
-            <div className="bg-white-luxury rounded-lg p-4 border border-gold-light/30">
-              <div className="flex items-center text-charcoal-gray text-sm mb-1">
-                <svg className="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Duration
+            <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/50">
+              <div className="flex items-center text-slate-500 text-sm mb-1">
+                <FontAwesomeIcon icon={faClock} className="w-4 h-4 mr-2 text-amber-500" />
+                Durasi
               </div>
-              <div className="font-semibold text-charcoal text-lg">
-                {durationMinutes} minutes
+              <div className="font-semibold text-slate-800 text-lg">
+                {durationMinutes} menit
               </div>
             </div>
 
-            <div className="bg-white-luxury rounded-lg p-4 border border-gold-light/30">
-              <div className="flex items-center text-charcoal-gray text-sm mb-1">
-                <svg className="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                Participant
+            <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/50">
+              <div className="flex items-center text-slate-500 text-sm mb-1">
+                <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-2 text-amber-500" />
+                Peserta
               </div>
-              <div className="font-semibold text-charcoal text-lg truncate">
+              <div className="font-semibold text-slate-800 text-lg truncate">
                 {studentName}
                 {studentEmail && (
-                  <span className="text-sm font-normal text-charcoal-gray/60 ml-2">
+                  <span className="text-sm font-normal text-slate-400 ml-2">
                     ({studentEmail})
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="bg-white-luxury rounded-lg p-4 border border-gold-light/30">
-              <div className="flex items-center text-charcoal-gray text-sm mb-1">
-                <svg className="w-4 h-4 mr-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+            <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/50">
+              <div className="flex items-center text-slate-500 text-sm mb-1">
+                <FontAwesomeIcon icon={faShieldAlt} className="w-4 h-4 mr-2 text-amber-500" />
                 Status
               </div>
-              <div className="font-semibold text-charcoal text-lg flex items-center">
+              <div className="font-semibold text-slate-800 text-lg flex items-center">
                 {canStart ? (
                   <>
-                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-                    Ready to Start
+                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                    Siap Mulai
                   </>
                 ) : countdown !== null && countdown > 0 ? (
                   <>
-                    <span className="inline-block w-2 h-2 rounded-full bg-gold mr-2 animate-pulse"></span>
-                    Starting in {countdown}s
+                    <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2 animate-pulse"></span>
+                    Mulai dalam {countdown}s
                   </>
                 ) : (
                   <>
-                    <span className="inline-block w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
-                    Waiting...
+                    <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-2"></span>
+                    Menunggu...
                   </>
                 )}
               </div>
@@ -197,35 +219,33 @@ const Dashboard = () => {
           <div className="mb-8">
             <button
               onClick={() => setShowRules(!showRules)}
-              className="flex items-center text-gold-dark hover:text-gold transition-colors text-sm font-medium"
+              className="flex items-center text-amber-600 hover:text-amber-700 transition-colors text-sm font-medium"
             >
-              <svg className={`w-4 h-4 mr-2 transform transition-transform ${showRules ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-              </svg>
-              {showRules ? 'Hide Rules' : 'Show Competition Rules'}
+              <FontAwesomeIcon icon={showRules ? faChevronUp : faChevronDown} className="w-4 h-4 mr-2" />
+              {showRules ? 'Sembunyikan Aturan' : 'Tampilkan Aturan Kompetisi'}
             </button>
             
             {showRules && (
-              <div className="mt-4 p-5 bg-white-luxury rounded-lg border border-gold-light/30 space-y-2 animate-fade-in">
+              <div className="mt-4 p-5 bg-slate-50/80 rounded-xl border border-slate-200/50 space-y-3 animate-fade-in">
                 <div className="flex items-start space-x-3">
-                  <span className="text-gold font-bold text-sm">1.</span>
-                  <p className="text-charcoal-gray text-sm">You have <span className="font-semibold text-charcoal">{durationMinutes} minutes</span> to complete all questions</p>
+                  <span className="text-amber-500 font-bold text-sm">1.</span>
+                  <p className="text-slate-600 text-sm">Anda memiliki <span className="font-semibold text-slate-800">{durationMinutes} menit</span> untuk menyelesaikan semua soal</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-gold font-bold text-sm">2.</span>
-                  <p className="text-charcoal-gray text-sm">All questions must be answered before submitting</p>
+                  <span className="text-amber-500 font-bold text-sm">2.</span>
+                  <p className="text-slate-600 text-sm">Semua soal harus dijawab sebelum mengumpulkan</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-gold font-bold text-sm">3.</span>
-                  <p className="text-charcoal-gray text-sm">Your progress is automatically saved with every selection</p>
+                  <span className="text-amber-500 font-bold text-sm">3.</span>
+                  <p className="text-slate-600 text-sm">Progress Anda otomatis tersimpan dengan setiap pilihan</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-gold font-bold text-sm">4.</span>
-                  <p className="text-charcoal-gray text-sm">You cannot pause the timer once the exam begins</p>
+                  <span className="text-amber-500 font-bold text-sm">4.</span>
+                  <p className="text-slate-600 text-sm">Timer tidak dapat dijeda setelah ujian dimulai</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-gold font-bold text-sm">5.</span>
-                  <p className="text-charcoal-gray text-sm">The system will auto-submit when time expires</p>
+                  <span className="text-amber-500 font-bold text-sm">5.</span>
+                  <p className="text-slate-600 text-sm">Sistem akan mengumpulkan otomatis saat waktu habis</p>
                 </div>
               </div>
             )}
@@ -236,26 +256,23 @@ const Dashboard = () => {
             <button
               onClick={handleStartExam}
               disabled={!canStart || isStarting || isLoading}
-              className={`flex-1 btn-gold py-3.5 rounded-lg font-semibold text-white text-base
-                transition-all duration-300 relative overflow-hidden
-                ${(!canStart || isStarting || isLoading) ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-gold-lg hover:transform hover:-translate-y-0.5'}
+              className={`flex-1 py-3.5 rounded-xl font-semibold text-white text-base
+                bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700
+                shadow-xl shadow-amber-500/30 hover:shadow-amber-500/50
+                transition-all duration-300 transform hover:-translate-y-0.5
+                ${(!canStart || isStarting || isLoading) ? 'opacity-50 cursor-not-allowed hover:transform-none' : ''}
                 group`}
             >
               {isStarting || isLoading ? (
                 <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Preparing...
+                  <FontAwesomeIcon icon={faSpinner} className="w-5 h-5 mr-3 animate-spin" />
+                  Mempersiapkan...
                 </span>
               ) : (
                 <span className="flex items-center justify-center">
-                  <span>{canStart ? 'Mulai Lomba' : 'Waiting for Session...'}</span>
+                  <span>{canStart ? 'Mulai Lomba' : 'Menunggu Sesi...'}</span>
                   {canStart && (
-                    <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
+                    <FontAwesomeIcon icon={faPlay} className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
                   )}
                 </span>
               )}
@@ -263,19 +280,23 @@ const Dashboard = () => {
 
             <button
               onClick={handleLogout}
-              className="px-6 py-3.5 btn-gold-outline rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-gold"
+              className="px-6 py-3.5 rounded-xl font-medium text-slate-600 border-2 border-slate-200 hover:border-amber-400 hover:text-amber-600 hover:shadow-lg transition-all duration-300"
             >
-              Logout
+              <FontAwesomeIcon icon={faSignOutAlt} className="w-4 h-4 mr-2" />
+              Keluar
             </button>
           </div>
 
           {/* Session Info */}
-          <div className="mt-6 pt-6 border-t border-gold-light/30">
-            <div className="flex items-center justify-between text-xs text-charcoal-gray/60">
-              <span>Session ID: {accessCode}</span>
+          <div className="mt-6 pt-6 border-t border-slate-200/50">
+            <div className="flex items-center justify-between text-xs text-slate-400">
               <span className="flex items-center">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
-                Secure Connection
+                <FontAwesomeIcon icon={faKey} className="w-3 h-3 mr-1.5 text-amber-400" />
+                Sesi: {accessCode}
+              </span>
+              <span className="flex items-center">
+                <FontAwesomeIcon icon={faShieldAlt} className="w-3 h-3 mr-1.5 text-emerald-400" />
+                Koneksi Aman
               </span>
             </div>
           </div>

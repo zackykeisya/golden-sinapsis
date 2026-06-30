@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useExam } from '../context/ExamContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faArrowLeft, 
+  faGraduationCap, 
+  faLock, 
+  faClock, 
+  faSave,
+  faCheckCircle,
+  faExclamationCircle,
+  faArrowRight,
+  faUser,
+  faEnvelope,
+  faKey
+} from '@fortawesome/free-solid-svg-icons';
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -20,7 +34,6 @@ const JoinPage = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (participantId && !isExamStarted) {
       navigate('/dashboard');
@@ -33,19 +46,19 @@ const JoinPage = () => {
     const errors = {};
     
     if (!accessCode.trim()) {
-      errors.accessCode = 'Access code is required';
+      errors.accessCode = 'Kode akses wajib diisi';
     } else if (accessCode.trim().length < 5) {
-      errors.accessCode = 'Access code must be at least 5 characters';
+      errors.accessCode = 'Kode akses minimal 5 karakter';
     }
     
     if (!studentName.trim()) {
-      errors.studentName = 'Student name is required';
+      errors.studentName = 'Nama lengkap wajib diisi';
     } else if (studentName.trim().length < 2) {
-      errors.studentName = 'Name must be at least 2 characters';
+      errors.studentName = 'Nama minimal 2 karakter';
     }
     
     if (studentEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(studentEmail)) {
-      errors.studentEmail = 'Please enter a valid email address';
+      errors.studentEmail = 'Masukkan alamat email yang valid';
     }
     
     setFormErrors(errors);
@@ -76,65 +89,75 @@ const JoinPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white-luxury flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50/30 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Back Button */}
       <button
         onClick={() => navigate('/')}
-        className="absolute top-6 left-6 flex items-center text-charcoal-gray/60 hover:text-gold transition-colors"
+        className="absolute top-6 left-6 flex items-center text-slate-400 hover:text-amber-600 transition-colors duration-200 group"
       >
-        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        Kembali
+        <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+        <span className="text-sm font-medium">Kembali</span>
       </button>
 
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gold-glow rounded-full opacity-20"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gold-glow rounded-full opacity-20"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-glow rounded-full opacity-5"></div>
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-gradient-to-r from-amber-300/20 to-amber-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-gradient-to-l from-amber-300/20 to-amber-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-200/5 to-transparent rounded-full blur-3xl"></div>
+        
+        {/* Geometric Pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute top-20 right-20">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+              <path d="M60 0L72 45L120 60L72 75L60 120L48 75L0 60L48 45L60 0Z" fill="#D4AF37" />
+            </svg>
+          </div>
+          <div className="absolute bottom-20 left-20">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <path d="M40 0L48 30L80 40L48 50L40 80L32 50L0 40L32 30L40 0Z" fill="#D4AF37" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` 
+        }}></div>
       </div>
 
       {/* Main Card */}
-      <div className="relative w-full max-w-md">
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-1 bg-gold-gradient rounded-full"></div>
+      <div className="relative w-full max-w-md z-10">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
 
-        <div className="card-gold p-8 md:p-10 relative">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-slate-200/50 shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-500">
           {/* Logo/Icon Area */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold-gradient text-white mb-4 shadow-gold">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-xl shadow-amber-500/25 mb-5 transform hover:scale-110 transition-transform duration-300">
+              <FontAwesomeIcon icon={faGraduationCap} className="w-10 h-10" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-display text-gold-gradient">
+            <h1 className="text-3xl md:text-4xl font-display font-bold bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent">
               Masuk Ruang Lomba
             </h1>
-            <p className="text-charcoal-gray text-sm mt-2 font-light">
+            <p className="text-slate-500 text-sm mt-2 font-light">
               Masukkan kode akses yang telah diberikan
             </p>
           </div>
 
           {/* Success Animation */}
           {showSuccess && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg animate-float">
-              <div className="flex items-center justify-center text-green-700">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="font-medium">Access Granted! Redirecting...</span>
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl animate-float">
+              <div className="flex items-center justify-center text-emerald-700">
+                <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 mr-2" />
+                <span className="font-medium">Akses Diberikan! Mengalihkan...</span>
               </div>
             </div>
           )}
 
           {/* Error Display */}
           {error && !showSuccess && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-pulse">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl animate-pulse">
               <div className="flex items-center text-red-700">
-                <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <FontAwesomeIcon icon={faExclamationCircle} className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="text-sm">{error}</span>
               </div>
             </div>
@@ -144,7 +167,8 @@ const JoinPage = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Access Code Field */}
             <div>
-              <label className="block text-sm font-medium text-charcoal-light mb-1.5">
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                <FontAwesomeIcon icon={faKey} className="w-4 h-4 mr-2 text-amber-500" />
                 Kode Akses
               </label>
               <div className={`relative transition-all duration-300 ${
@@ -161,22 +185,17 @@ const JoinPage = () => {
                   onBlur={() => setIsFocused(false)}
                   onKeyPress={handleKeyPress}
                   placeholder="Contoh: LOMBA-MAT-XYZ7"
-                  className={`w-full px-4 py-3 input-gold rounded-lg text-charcoal placeholder-charcoal-gray/50
-                    ${formErrors.accessCode ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''}
-                    ${isFocused ? 'border-gold shadow-gold' : ''}
-                    transition-all duration-300`}
+                  className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-slate-800 placeholder-slate-400/60
+                    ${formErrors.accessCode ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : 'border-slate-200 focus:border-amber-400 focus:ring-amber-200'}
+                    ${isFocused ? 'border-amber-400 shadow-lg shadow-amber-500/10' : ''}
+                    transition-all duration-300 outline-none focus:ring-4`}
                   disabled={isLoading || showSuccess}
                   autoFocus
                 />
-                {isFocused && !formErrors.accessCode && (
-                  <div className="absolute inset-0 rounded-lg bg-gold-glow opacity-20 pointer-events-none"></div>
-                )}
               </div>
               {formErrors.accessCode && (
                 <p className="mt-1.5 text-sm text-red-500 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <FontAwesomeIcon icon={faExclamationCircle} className="w-4 h-4 mr-1" />
                   {formErrors.accessCode}
                 </p>
               )}
@@ -184,7 +203,8 @@ const JoinPage = () => {
 
             {/* Student Name Field */}
             <div>
-              <label className="block text-sm font-medium text-charcoal-light mb-1.5">
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-2 text-amber-500" />
                 Nama Lengkap
               </label>
               <input
@@ -196,16 +216,14 @@ const JoinPage = () => {
                 }}
                 onKeyPress={handleKeyPress}
                 placeholder="Masukkan nama lengkap Anda"
-                className={`w-full px-4 py-3 input-gold rounded-lg text-charcoal placeholder-charcoal-gray/50
-                  ${formErrors.studentName ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''}
-                  transition-all duration-300`}
+                className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-slate-800 placeholder-slate-400/60
+                  ${formErrors.studentName ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : 'border-slate-200 focus:border-amber-400 focus:ring-amber-200'}
+                  transition-all duration-300 outline-none focus:ring-4`}
                 disabled={isLoading || showSuccess}
               />
               {formErrors.studentName && (
                 <p className="mt-1.5 text-sm text-red-500 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <FontAwesomeIcon icon={faExclamationCircle} className="w-4 h-4 mr-1" />
                   {formErrors.studentName}
                 </p>
               )}
@@ -213,8 +231,9 @@ const JoinPage = () => {
 
             {/* Student Email Field (Optional) */}
             <div>
-              <label className="block text-sm font-medium text-charcoal-light mb-1.5">
-                Email <span className="text-charcoal-gray/50 text-xs font-light">(Opsional)</span>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                <FontAwesomeIcon icon={faEnvelope} className="w-4 h-4 mr-2 text-amber-500" />
+                Email <span className="text-slate-400 text-xs font-light">(Opsional)</span>
               </label>
               <input
                 type="email"
@@ -225,16 +244,14 @@ const JoinPage = () => {
                 }}
                 onKeyPress={handleKeyPress}
                 placeholder="email@anda.com"
-                className={`w-full px-4 py-3 input-gold rounded-lg text-charcoal placeholder-charcoal-gray/50
-                  ${formErrors.studentEmail ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''}
-                  transition-all duration-300`}
+                className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-slate-800 placeholder-slate-400/60
+                  ${formErrors.studentEmail ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : 'border-slate-200 focus:border-amber-400 focus:ring-amber-200'}
+                  transition-all duration-300 outline-none focus:ring-4`}
                 disabled={isLoading || showSuccess}
               />
               {formErrors.studentEmail && (
                 <p className="mt-1.5 text-sm text-red-500 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <FontAwesomeIcon icon={faExclamationCircle} className="w-4 h-4 mr-1" />
                   {formErrors.studentEmail}
                 </p>
               )}
@@ -244,10 +261,12 @@ const JoinPage = () => {
             <button
               type="submit"
               disabled={isLoading || showSuccess}
-              className={`w-full btn-gold py-3.5 rounded-lg font-semibold text-white text-base
-                transition-all duration-300 relative overflow-hidden
-                ${(isLoading || showSuccess) ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-gold-lg hover:transform hover:-translate-y-0.5'}
-                group`}
+              className={`w-full py-3.5 rounded-xl font-semibold text-white text-base
+                bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700
+                shadow-xl shadow-amber-500/30 hover:shadow-amber-500/50
+                transition-all duration-300 transform hover:-translate-y-0.5
+                ${(isLoading || showSuccess) ? 'opacity-70 cursor-not-allowed hover:transform-none' : ''}
+                group relative overflow-hidden`}
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -258,51 +277,41 @@ const JoinPage = () => {
                   Memvalidasi...
                 </span>
               ) : showSuccess ? (
-                <span className="flex items-center justify-center text-green-200">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
+                <span className="flex items-center justify-center text-emerald-200">
+                  <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 mr-2" />
                   Akses Diberikan!
                 </span>
               ) : (
                 <span className="flex items-center justify-center">
                   <span>Masuk Ruang Lomba</span>
-                  <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  <FontAwesomeIcon icon={faArrowRight} className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
                 </span>
               )}
             </button>
           </form>
 
           {/* Footer Information */}
-          <div className="mt-6 pt-6 border-t border-gold-light/30">
-            <div className="flex items-center justify-center space-x-4 text-xs text-charcoal-gray/60">
+          <div className="mt-6 pt-6 border-t border-slate-200/50">
+            <div className="flex items-center justify-center space-x-4 text-xs text-slate-400">
               <span className="flex items-center">
-                <svg className="w-3.5 h-3.5 mr-1.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
+                <FontAwesomeIcon icon={faLock} className="w-3.5 h-3.5 mr-1.5 text-amber-400" />
                 Sesi Aman
               </span>
-              <span className="w-px h-4 bg-gold-light/30"></span>
+              <span className="w-px h-4 bg-slate-200"></span>
               <span className="flex items-center">
-                <svg className="w-3.5 h-3.5 mr-1.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <FontAwesomeIcon icon={faClock} className="w-3.5 h-3.5 mr-1.5 text-amber-400" />
                 Terbatas Waktu
               </span>
-              <span className="w-px h-4 bg-gold-light/30"></span>
+              <span className="w-px h-4 bg-slate-200"></span>
               <span className="flex items-center">
-                <svg className="w-3.5 h-3.5 mr-1.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <FontAwesomeIcon icon={faSave} className="w-3.5 h-3.5 mr-1.5 text-amber-400" />
                 Auto-Save
               </span>
             </div>
           </div>
         </div>
 
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-gold-gradient/30 rounded-full"></div>
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400/30 to-amber-600/30 rounded-full"></div>
       </div>
     </div>
   );
